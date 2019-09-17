@@ -187,7 +187,6 @@ define dns::server::options (
   $extra_options = {},
 ) {
   include dns::server::params
-
   $valid_check_names = ['fail', 'warn', 'ignore']
   $valid_forward_policy = ['first', 'only']
   $cfg_dir = $::dns::server::params::cfg_dir
