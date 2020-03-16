@@ -171,6 +171,7 @@ define dns::zone (
   $zone_retry = '86400',
   $zone_expire = '2419200',
   $zone_minimum = '604800',
+  $default_zone = false,
   $nameservers = [ $::fqdn ],
   $reverse = false,
   $serial = false,
@@ -180,17 +181,14 @@ define dns::zone (
   $allow_query =[],
   $allow_update =[],
   $forward_policy = 'first',
+  $view = undef,
   $slave_masters = undef,
   $zone_notify = undef,
   $also_notify = [],
   $ensure = present,
-  $data_dir = $::dns::server::params::data_dir,
-  $view = undef,
-  $default_zone = false,
+  $data_dir = $::dns::server::data_dir,
+  $cfg_dir = $::dns::server::cfg_dir,
 ) {
-
-  $cfg_dir = $dns::server::params::cfg_dir
-
   validate_array($allow_transfer)
   if $allow_forwarder != undef {
     validate_array($allow_forwarder)

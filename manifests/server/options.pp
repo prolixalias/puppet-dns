@@ -189,7 +189,6 @@ define dns::server::options (
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $valid_forward_policy = ['first', 'only']
-  $cfg_dir = $::dns::server::params::cfg_dir
 
   if ! defined(Class['::dns::server']) {
     fail('You must include the ::dns::server base class before using any dns options defined resources')
