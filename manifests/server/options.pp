@@ -157,7 +157,6 @@
 #    forwarders => [ '8.8.8.8', '8.8.4.4' ],
 #   }
 #
-include dns::server::params
 define dns::server::options (
   $allow_query = [],
   $allow_recursion = [],
@@ -191,6 +190,8 @@ define dns::server::options (
   $zone_notify = undef,
   $extra_options = {},
 ) {
+  include dns::server::params
+
   $valid_check_names = ['fail', 'warn', 'ignore']
   $valid_forward_policy = ['first', 'only']
 
