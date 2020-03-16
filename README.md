@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/ajjahn/puppet-dns.png?branch=master)](https://travis-ci.org/ajjahn/puppet-dns)
 
+# This is just an update of the original ajjahn-dns module
+
 Module for provisioning DNS (bind9)
 
 Supports:

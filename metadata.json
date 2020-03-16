@@ -1,37 +1,44 @@
 {
-  "name": "ajjahn-dns",
-  "version": "2.1.1",
+  "name": "fervid-dns",
+  "version": "2.0.0",
   "author": "Adam Jahn",
   "summary": "Module for provisioning DNS (bind9)",
   "license": "Apache-2.0",
-  "source": "https://github.com/ajjahn/puppet-dns",
-  "project_page": "https://github.com/ajjahn/puppet-dns",
-  "issues_url": "https://github.com/ajjahn/puppet-dns/issues",
-  "description": "Module for provisioning DNS (bind9)",
+  "source": "https://github.com/fervidus/dns",
+  "project_page": "https://github.com/fervidus/dns",
+  "issues_url": "https://github.com/fervidus/dns/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">=2.0.0 <6.0.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=2.4.0 <6.0.0"
+    }
+  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5.0",
-        "6.0"
+        "7.0"
       ]
     },
     {
-      "operatingsystem": "Ubuntu",
+      "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "12.04",
-        "10.04"
+        "7.0"
       ]
     }
   ],
-  "dependencies": [
+  "requirements": [
     {
-      "name": "puppetlabs/concat",
-      "version_requirement": ">=2.0.0"
-    },
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">=2.4.0 <7.0.0"
+      "name": "puppet",
+      "version_requirement": ">= 4.7.0 < 7.0.0"
     }
-  ]
+  ],
+  "description": "Module for provisioning DNS (bind9)",
+  "pdk-version": "1.14.0",
+  "template-url": "pdk-default#1.14.0",
+  "template-ref": "1.14.0-0-g1bf3a4e"
 }

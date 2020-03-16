@@ -47,12 +47,14 @@
 #   the array that matches the requester's address will be used.
 #
 # [*allow_forwarder*]
+#   > **DEPRECATED** in favor of the `forwarders` parameter.  This
+#   > parameter will be removed in the next major release.
 #   An array of IP addresses and optional port numbers to which queries
 #   for this zone will be forwarded (based on the *forward_policy*
 #   setting).  If the optional port number is included, it must be
 #   separated from the IP address by the word `port` - for example, `[
 #   '192.168.100.102 port 1234' ]`.  Defaults to an empty array, which
-#   means no forwarding will be done.
+#   means the global forwarders options will be used.
 #
 # [*allow_query*]
 #   An array of IP addresses from which queries should be allowed
@@ -92,6 +94,19 @@
 #   the DNS server will forward the request; if the forwarder server
 #   returns a not-found response, the DNS server will attempt to answer
 #   the request itself.
+#
+# [*forwarders*]
+#   An array of IP addresses and optional port numbers to which queries
+#   for this zone will be forwarded (based on the *forward_policy*
+#   setting).  If the optional port number is included, it must be
+#   separated from the IP address by the word `port` - for example,
+#   `[ '192.168.100.102 port 1234' ]`.  If passed an empty array or the
+#   boolean value `false`, the zone will not forward.  If passed `true`
+#   or left undefined, the zone will use the global forwarders defined
+#   in `dns::server::options`.
+#   *Note* - this parameter deprecates and should be used in place of
+#   the *allow_forwarder* parameter.  If both parameters are passed in,
+#   only *forwarders* will take effect.
 #
 # [*nameservers*]
 #   An array containing the FQDN's of each name server for this zone.
@@ -181,7 +196,6 @@ define dns::zone (
   $serial = false,
   $zone_type = 'master',
   $allow_transfer = [],
-  $allow_forwarder = undef,
   $allow_query =[],
   $allow_update =[],
   $allow_update_forwarding =[],
@@ -191,13 +205,40 @@ define dns::zone (
   $zone_notify = undef,
   $also_notify = [],
   $ensure = present,
+  $forwarders = undef,
+  $allow_forwarder = undef,
   $data_dir = $::dns::server::data_dir,
   $cfg_dir = $::dns::server::cfg_dir,
 ) {
   validate_array($allow_transfer)
-  if $allow_forwarder != undef {
-    validate_array($allow_forwarder)
+  # deprecation notice for allow_forwarder
+  if size($allow_forwarder) > 0 {
+    warning('dns::zone parameter `allow_forwarder` deprecated in favor of `forwarders`')
+    notify { 'dns::zone parameter `allow_forwarder` deprecated in favor of `forwarders`': }
   }
+
+  # assign $zone_forwarders to the list of forwarders to define for the
+  # zone.  an empty list means *no forwarders*.  set $zone_forwarders to
+  # undef to not define the forwarders list at all (and thereby default
+  # to the forwarders list defined in the global options).
+
+  if $forwarders != undef {
+    if is_bool($forwarders) {
+      if $forwarders {
+        $zone_forwarders = undef
+      } else {
+        $zone_forwarders = []
+      }
+    } else {
+      validate_array($forwarders)
+      $zone_forwarders = $forwarders
+    }
+  } elsif size($allow_forwarder) > 0 {
+    $zone_forwarders = $allow_forwarder
+  } else {
+    $zone_forwarders = undef
+  }
+
   if !member(['first', 'only'], $forward_policy) {
     fail('The forward policy can only be set to either first or only')
   }
@@ -281,8 +322,6 @@ define dns::zone (
       notify      => Exec["bump-${zone}-serial"],
     }
 
-
-
     # Generate real zone from stage file by changing bogus serial number
     # to current timestamp. A real zone file will be updated only at change of
     # the stage file, thanks to this serial is updated only in case of need.
@@ -300,14 +339,12 @@ define dns::zone (
       group       => $dns::server::params::group,
       require     => Class['dns::server::install'],
     }
-    ~>
-    exec { "test-${zone}-serial":
+    ~> exec { "test-${zone}-serial":
       command     => "/usr/sbin/named-checkzone ${name} ${zone_file_temp}",
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
     }
-    ~>
-    exec { "apply-${zone}-serial":
+    ~> exec { "apply-${zone}-serial":
       command     => "mv ${zone_file_temp} ${zone_file}",
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,

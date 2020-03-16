@@ -35,11 +35,10 @@ zone "<%= @zone %>" {
     };
 <%- end -%>
 <% end -%>
-<%- if ['master','slave','stub','forward'].include? @zone_type and @allow_forwarder.is_a?(Array) -%>
-<%- if @allow_forwarder.size != 0 -%>
+<% if !@zone_forwarders.nil? and ( @zone_type == 'master' or  @zone_type == 'forward') -%>
     forward <%= @forward_policy %>;
     forwarders {
-    <%- @allow_forwarder.each do |ip| -%>
+    <%- @zone_forwarders.each do |ip| -%>
         <%= ip %>;
     <%- end -%>
     };

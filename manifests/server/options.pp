@@ -167,7 +167,7 @@ define dns::server::options (
   $control_channel_ip = undef,
   $control_channel_port = undef,
   $control_channel_allow = undef,
-  $data_dir = $::dns::server::params::data_dir,
+  $data_dir = $::dns::server::data_dir,
   $dnssec_validation = $::dns::server::params::default_dnssec_validation,
   $dnssec_enable = $::dns::server::params::default_dnssec_enable,
   $forward_policy = undef,
@@ -188,10 +188,10 @@ define dns::server::options (
   $transfer_source = undef,
   $working_dir = $::dns::server::params::working_dir,
   $zone_notify = undef,
+  $cfg_dir = $::dns::server::cfg_dir,
   $extra_options = {},
 ) {
   include dns::server::params
-
   $valid_check_names = ['fail', 'warn', 'ignore']
   $valid_forward_policy = ['first', 'only']
 
