@@ -2,7 +2,12 @@ require 'spec_helper'
 
 describe 'dns::server::config', type: :class do
   context 'on an unsupported OS' do
-    let :facts do { osfamily: 'Solaris', concat_basedir: '/dne' } end
+    let :facts do
+      {
+        osfamily: 'Solaris',
+        concat_basedir: '/dne'
+      }
+    end
 
     it { is_expected.to raise_error(%r{dns::server is incompatible with this osfamily}) }
   end

@@ -19,7 +19,7 @@ describe 'dns::server::install', type: :class do
   end
 
   context 'on a Debian OS with non-default params' do
-    let(:facts)  { { osfamily: 'Debian'  } }
+    let(:facts)  { { osfamily: 'Debian' } }
     let(:params) { { ensure_packages: 'present' } }
 
     it { is_expected.to contain_class('dns::server::params') }
