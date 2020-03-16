@@ -1,15 +1,15 @@
 # Puppet DNS (BIND9) Module
 
-[![Build Status](https://travis-ci.org/ajjahn/puppet-dns.png?branch=master)](https://travis-ci.org/ajjahn/puppet-dns)
+[![Build Status](https://travis-ci.org/prolixalias/puppet-dns.png?branch=master)](https://travis-ci.org/prolixalias/puppet-dns)
 
-# This is just an update of the original ajjahn-dns module
+# Original ajjahn-dns module seems to have become unmaintained.
 
 Module for provisioning DNS (bind9)
 
 Supports:
 
-* Ubuntu: 14.04, 12.04
-* CentOS: 7.x, 6.x
+* RedHat: v[678]
+* CentOS: v[678]
 
 Patches to support other operating systems are welcome.
 
@@ -217,6 +217,15 @@ Note: This module is a merge of the work from the following authors:
 * [ajjahn](https://github.com/ajjahn/puppet-dns)
 * [Danzilio](https://github.com/danzilio)
 * [solarkennedy](https://github.com/solarkennedy)
+* [jjthiessen](https://github.com/jjthiessen)
+* [jearls](https://github.com/jearls)
+* [lingfish](https://github.com/lingfish)
+* [HielkeJ](https://github.com/HielkeJ)
+* [goosecrew](https://github.com/goosecrew)
+* [dimov-cz](https://github.com/dimov-cz)
+* [amateo](https://github.com/amateo)
+* [bjbelanger](https://github.com/bjbelanger)
+* [prolixalias](https://github.com/prolixalias)
 
 ## License
 
