@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'dns::server::config', type: :class do
@@ -5,7 +7,7 @@ describe 'dns::server::config', type: :class do
     let :facts do
       {
         osfamily: 'Solaris',
-        concat_basedir: '/dne',
+        concat_basedir: '/dne'
       }
     end
 
@@ -17,7 +19,7 @@ describe 'dns::server::config', type: :class do
       {
         osfamily: 'Debian',
         operatingsystemrelease: '6',
-        concat_basedir: '/dne',
+        concat_basedir: '/dne'
       }
     end
 
@@ -29,7 +31,7 @@ describe 'dns::server::config', type: :class do
     let :facts do
       {
         osfamily: 'RedHat',
-        concat_basedir: '/dne',
+        concat_basedir: '/dne'
       }
     end
 

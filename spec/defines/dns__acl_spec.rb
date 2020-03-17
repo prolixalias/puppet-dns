@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'dns::acl' do
@@ -5,7 +7,7 @@ describe 'dns::acl' do
   let(:facts) do
     {
       concat_basedir: '/tmp',
-      osfamily: 'Debian',
+      osfamily: 'Debian'
     }
   end
 

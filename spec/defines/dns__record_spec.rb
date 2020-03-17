@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'dns::record', type: :define do
@@ -12,7 +14,7 @@ describe 'dns::record', type: :define do
         dns_class: 'IN',
         record: 'LOC',
         data: '34 42 40.126 N 86 39 21.248 W 203m 10m 100m 10m',
-        ttl: '1h45m10s',
+        ttl: '1h45m10s'
       }
     end
 
@@ -28,7 +30,7 @@ describe 'dns::record', type: :define do
         dns_class: 'IN',
         record: 'A',
         data: '172.16.104.1',
-        ttl: 2_147_483_648,
+        ttl: 2_147_483_648
       }
     end
 
@@ -43,7 +45,7 @@ describe 'dns::record', type: :define do
         dns_class: 'IN',
         record: 'A',
         data: '172.16.104.2',
-        ttl: '4scoreand7years',
+        ttl: '4scoreand7years'
       }
     end
 

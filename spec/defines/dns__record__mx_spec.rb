@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'dns::record::mx', type: :define do
@@ -8,7 +10,7 @@ describe 'dns::record::mx', type: :define do
     let :params do
       {
         zone: 'example.com',
-        data: 'mailserver.example.com',
+        data: 'mailserver.example.com'
       }
     end
 
@@ -22,7 +24,7 @@ describe 'dns::record::mx', type: :define do
         zone: 'example.com',
         data: 'ittybittymx.example.com',
         host: 'branchoffice',
-        preference: 22,
+        preference: 22
       }
     end
 
@@ -35,7 +37,7 @@ describe 'dns::record::mx', type: :define do
       {
         zone: 'example.com',
         data: 'badpref.example.com',
-        preference: 65_537,
+        preference: 65_537
       }
     end
 
@@ -47,7 +49,7 @@ describe 'dns::record::mx', type: :define do
       {
         zone: 'example.com',
         data: 'worsepref.example.com',
-        preference: 'highest',
+        preference: 'highest'
       }
     end
 
@@ -58,7 +60,7 @@ describe 'dns::record::mx', type: :define do
     let :params do
       {
         zone: 'one.618',
-        data: 'goldenratio.example.com',
+        data: 'goldenratio.example.com'
       }
     end
 
@@ -69,7 +71,7 @@ describe 'dns::record::mx', type: :define do
     let :params do
       {
         zone: 123,
-        data: 'badzone.example.com',
+        data: 'badzone.example.com'
       }
     end
 
@@ -80,7 +82,7 @@ describe 'dns::record::mx', type: :define do
     let :params do
       {
         zone: '192.168.1.1',
-        data: 'ipaddrzone.example.com',
+        data: 'ipaddrzone.example.com'
       }
     end
 
@@ -91,7 +93,7 @@ describe 'dns::record::mx', type: :define do
     let :params do
       {
         zone: 'example.com',
-        data: 456,
+        data: 456
       }
     end
 
@@ -102,7 +104,7 @@ describe 'dns::record::mx', type: :define do
     let :params do
       {
         zone: 'example.com',
-        data: '192.168.4.4',
+        data: '192.168.4.4'
       }
     end
 

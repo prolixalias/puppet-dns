@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'dns::record::ptr::by_ip', type: :define do
@@ -8,7 +10,7 @@ describe 'dns::record::ptr::by_ip', type: :define do
     let :params do
       {
         host: 'test1',
-        zone: 'example.com',
+        zone: 'example.com'
       }
     end
 
@@ -24,7 +26,7 @@ describe 'dns::record::ptr::by_ip', type: :define do
     let :params do
       {
         host: 'test2.example.com',
-        zone: '',
+        zone: ''
       }
     end
 
@@ -39,7 +41,7 @@ describe 'dns::record::ptr::by_ip', type: :define do
   context 'passing a valid host but not passing a zone' do
     let :params do
       {
-        host: 'test3.example.com',
+        host: 'test3.example.com'
       }
     end
 
@@ -55,7 +57,7 @@ describe 'dns::record::ptr::by_ip', type: :define do
     let :params do
       {
         host: '@',
-        zone: 'example.com',
+        zone: 'example.com'
       }
     end
 
@@ -71,7 +73,7 @@ describe 'dns::record::ptr::by_ip', type: :define do
     let :params do
       {
         host: '@',
-        zone: '',
+        zone: ''
       }
     end
 
@@ -86,7 +88,7 @@ describe 'dns::record::ptr::by_ip', type: :define do
   context 'passing a host of `@` but not passing a zone' do
     let :params do
       {
-        host: '@',
+        host: '@'
       }
     end
 

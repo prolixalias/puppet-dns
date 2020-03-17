@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'dns::record::ns', type: :define do
@@ -8,7 +10,7 @@ describe 'dns::record::ns', type: :define do
     let :params do
       {
         zone: 'example.com',
-        data: 'ns3',
+        data: 'ns3'
       }
     end
 
@@ -21,7 +23,7 @@ describe 'dns::record::ns', type: :define do
       {
         zone: 'example.com',
         host: 'delegated-zone',
-        data: 'ns4.jp.example.net.',
+        data: 'ns4.jp.example.net.'
       }
     end
 
@@ -33,7 +35,7 @@ describe 'dns::record::ns', type: :define do
     let :params do
       {
         zone: 'six.022',
-        data: 'avogadro.example.com',
+        data: 'avogadro.example.com'
       }
     end
 
@@ -44,7 +46,7 @@ describe 'dns::record::ns', type: :define do
     let :params do
       {
         zone: 789,
-        data: 'badzone.example.com',
+        data: 'badzone.example.com'
       }
     end
 
@@ -55,7 +57,7 @@ describe 'dns::record::ns', type: :define do
     let :params do
       {
         zone: '192.168.2.1',
-        data: 'ipaddrzone.example.com',
+        data: 'ipaddrzone.example.com'
       }
     end
 
@@ -66,7 +68,7 @@ describe 'dns::record::ns', type: :define do
     let :params do
       {
         zone: 'example.com',
-        data: 443,
+        data: 443
       }
     end
 
@@ -77,7 +79,7 @@ describe 'dns::record::ns', type: :define do
     let :params do
       {
         zone: 'example.com',
-        data: '192.168.4.5',
+        data: '192.168.4.5'
       }
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'dns::record::a', type: :define do
@@ -10,12 +12,11 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: '192.168.128.42',
-        ptr: false,
+        ptr: false
       }
     end
 
     it { is_expected.not_to raise_error }
-    # rubocop:disable Layout/LineLength
     it { is_expected.to contain_concat__fragment('db.example.com.atest,A,example.com.record').with_content(%r{^atest\s+IN\s+A\s+192\.168\.128\.42$}) }
     it { is_expected.not_to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.42.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record') }
     # rubocop:enable Layout/LineLength
@@ -27,7 +28,7 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: '192.168.128.42',
-        ptr: true,
+        ptr: true
       }
     end
 
@@ -44,7 +45,7 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: '192.168.128.42',
-        ptr: 'all',
+        ptr: 'all'
       }
     end
 
@@ -61,7 +62,7 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: false,
+        ptr: false
       }
     end
 
@@ -78,7 +79,7 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: true,
+        ptr: true
       }
     end
 
@@ -95,7 +96,7 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all',
+        ptr: 'all'
       }
     end
 
@@ -114,17 +115,16 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all',
+        ptr: 'all'
       }
     end
     let :pre_condition do
       [
-        'dns::zone { "192.IN-ADDR.ARPA": }',
+        'dns::zone { "192.IN-ADDR.ARPA": }'
       ]
     end
 
     it { is_expected.not_to raise_error }
-    # rubocop:disable Layout/LineLength
     it { is_expected.to contain_concat__fragment('db.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,192.IN-ADDR.ARPA.record').with_content(%r{^68\.128\.168\s+IN\s+PTR\s+atest\.example\.com\.$}) }
     # rubocop:enable Layout/LineLength
   end
@@ -135,17 +135,16 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all',
+        ptr: 'all'
       }
     end
     let :pre_condition do
       [
-        'dns::zone { "168.192.IN-ADDR.ARPA": }',
+        'dns::zone { "168.192.IN-ADDR.ARPA": }'
       ]
     end
 
     it { is_expected.not_to raise_error }
-    # rubocop:disable Layout/LineLength
     it { is_expected.to contain_concat__fragment('db.168.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,168.192.IN-ADDR.ARPA.record').with_content(%r{^68\.128\s+IN\s+PTR\s+atest\.example\.com\.$}) }
     # rubocop:enable Layout/LineLength
   end
@@ -156,12 +155,12 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all',
+        ptr: 'all'
       }
     end
     let :pre_condition do
       [
-        'dns::zone { "128.168.192.IN-ADDR.ARPA": }',
+        'dns::zone { "128.168.192.IN-ADDR.ARPA": }'
       ]
     end
 
@@ -177,18 +176,17 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all',
+        ptr: 'all'
       }
     end
     let :pre_condition do
       [
         'dns::zone { "192.IN-ADDR.ARPA": }',
-        'dns::zone { "168.192.IN-ADDR.ARPA": }',
+        'dns::zone { "168.192.IN-ADDR.ARPA": }'
       ]
     end
 
     it { is_expected.not_to raise_error }
-    # rubocop:disable Layout/LineLength
     it { is_expected.to contain_concat__fragment('db.168.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,168.192.IN-ADDR.ARPA.record').with_content(%r{^68\.128\s+IN\s+PTR\s+atest\.example\.com\.$}) }
     # rubocop:enable Layout/LineLength
   end
@@ -199,13 +197,13 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all',
+        ptr: 'all'
       }
     end
     let :pre_condition do
       [
         'dns::zone { "192.IN-ADDR.ARPA": }',
-        'dns::zone { "128.168.192.IN-ADDR.ARPA": }',
+        'dns::zone { "128.168.192.IN-ADDR.ARPA": }'
       ]
     end
 
@@ -221,13 +219,13 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all',
+        ptr: 'all'
       }
     end
     let :pre_condition do
       [
         'dns::zone { "168.192.IN-ADDR.ARPA": }',
-        'dns::zone { "128.168.192.IN-ADDR.ARPA": }',
+        'dns::zone { "128.168.192.IN-ADDR.ARPA": }'
       ]
     end
 
@@ -243,14 +241,14 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all',
+        ptr: 'all'
       }
     end
     let :pre_condition do
       [
         'dns::zone { "192.IN-ADDR.ARPA": }',
         'dns::zone { "168.192.IN-ADDR.ARPA": }',
-        'dns::zone { "128.168.192.IN-ADDR.ARPA": }',
+        'dns::zone { "128.168.192.IN-ADDR.ARPA": }'
       ]
     end
 

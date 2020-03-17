@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'dns::record::aaaa', type: :define do
@@ -8,7 +10,7 @@ describe 'dns::record::aaaa', type: :define do
       {
         zone: 'example.com',
         title: 'foo',
-        data: ['::1'],
+        data: ['::1']
       }
     end
 
@@ -25,7 +27,7 @@ describe 'dns::record::aaaa', type: :define do
         zone: 'example.com',
         title: 'foo',
         host: 'bar',
-        data: ['::1'],
+        data: ['::1']
       }
     end
 
@@ -45,7 +47,7 @@ describe 'dns::record::a', type: :define do
       {
         zone: 'example.com',
         title: 'foo',
-        data: ['1.2.3.4'],
+        data: ['1.2.3.4']
       }
     end
 
@@ -62,7 +64,7 @@ describe 'dns::record::a', type: :define do
         zone: 'example.com',
         title: 'foo',
         host: 'bar',
-        data: ['1.2.3.4'],
+        data: ['1.2.3.4']
       }
     end
 
@@ -82,7 +84,7 @@ describe 'dns::record::cname', type: :define do
       {
         zone: 'example.com',
         title: 'foo',
-        data: 'baz.example.com',
+        data: 'baz.example.com'
       }
     end
 
@@ -99,7 +101,7 @@ describe 'dns::record::cname', type: :define do
         zone: 'example.com',
         title: 'foo',
         host: 'bar',
-        data: 'baz.example.com',
+        data: 'baz.example.com'
       }
     end
 
@@ -120,7 +122,7 @@ describe 'dns::record::mx', type: :define do
         zone: 'example.com',
         title: 'foo',
         data: 'baz.example.com',
-        preference: 10,
+        preference: 10
       }
     end
 
@@ -138,7 +140,7 @@ describe 'dns::record::mx', type: :define do
         title: 'foo',
         host: 'bar',
         data: 'baz.example.com',
-        preference: 10,
+        preference: 10
       }
     end
 
@@ -158,7 +160,7 @@ describe 'dns::record::ns', type: :define do
       {
         zone: 'example.com',
         title: 'foo',
-        data: 'baz.example.com.',
+        data: 'baz.example.com.'
       }
     end
 
@@ -175,7 +177,7 @@ describe 'dns::record::ns', type: :define do
         zone: 'example.com',
         title: 'foo',
         host: 'bar',
-        data: 'baz.example.com.',
+        data: 'baz.example.com.'
       }
     end
 
@@ -195,7 +197,7 @@ describe 'dns::record::ptr', type: :define do
       {
         zone: '0.0.127.IN-ADDR.ARPA',
         title: '1',
-        data: 'localhost',
+        data: 'localhost'
       }
     end
 
@@ -212,7 +214,7 @@ describe 'dns::record::ptr', type: :define do
         zone: '0.0.127.IN-ADDR.ARPA',
         title: 'foo',
         host: '1',
-        data: 'localhost',
+        data: 'localhost'
       }
     end
 
@@ -232,7 +234,7 @@ describe 'dns::record::txt', type: :define do
       {
         zone: 'example.com',
         title: 'foo',
-        data: 'baz',
+        data: 'baz'
       }
     end
 
@@ -249,7 +251,7 @@ describe 'dns::record::txt', type: :define do
         zone: 'example.com',
         title: 'foo',
         host: 'bar',
-        data: 'baz.example.com',
+        data: 'baz.example.com'
       }
     end
 

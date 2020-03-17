@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'dns::record::txt', type: :define do
@@ -9,7 +11,7 @@ describe 'dns::record::txt', type: :define do
       {
         host: 'txttest',
         zone: 'example.com',
-        data: 'testing',
+        data: 'testing'
       }
     end
 
@@ -22,7 +24,7 @@ describe 'dns::record::txt', type: :define do
       {
         host: 'txttest',
         zone: 'example.com',
-        data: 'this is a "test"',
+        data: 'this is a "test"'
       }
     end
 
@@ -35,7 +37,7 @@ describe 'dns::record::txt', type: :define do
       {
         host: 'txttest',
         zone: 'example.com',
-        data: 'this is a ' + 'very ' * 60 + 'long test',
+        data: 'this is a ' + 'very ' * 60 + 'long test'
       }
     end
 
