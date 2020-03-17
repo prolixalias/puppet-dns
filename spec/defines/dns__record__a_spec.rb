@@ -12,7 +12,7 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: '192.168.128.42',
-        ptr: false
+        ptr: false,
       }
     end
 
@@ -28,7 +28,7 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: '192.168.128.42',
-        ptr: true
+        ptr: true,
       }
     end
 
@@ -45,7 +45,7 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: '192.168.128.42',
-        ptr: 'all'
+        ptr: 'all',
       }
     end
 
@@ -62,7 +62,7 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: false
+        ptr: false,
       }
     end
 
@@ -79,7 +79,7 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: true
+        ptr: true,
       }
     end
 
@@ -96,7 +96,7 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all'
+        ptr: 'all',
       }
     end
 
@@ -115,12 +115,12 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all'
+        ptr: 'all',
       }
     end
     let :pre_condition do
       [
-        'dns::zone { "192.IN-ADDR.ARPA": }'
+        'dns::zone { "192.IN-ADDR.ARPA": }',
       ]
     end
 
@@ -135,12 +135,12 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all'
+        ptr: 'all',
       }
     end
     let :pre_condition do
       [
-        'dns::zone { "168.192.IN-ADDR.ARPA": }'
+        'dns::zone { "168.192.IN-ADDR.ARPA": }',
       ]
     end
 
@@ -155,12 +155,12 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all'
+        ptr: 'all',
       }
     end
     let :pre_condition do
       [
-        'dns::zone { "128.168.192.IN-ADDR.ARPA": }'
+        'dns::zone { "128.168.192.IN-ADDR.ARPA": }',
       ]
     end
 
@@ -176,13 +176,13 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all'
+        ptr: 'all',
       }
     end
     let :pre_condition do
       [
         'dns::zone { "192.IN-ADDR.ARPA": }',
-        'dns::zone { "168.192.IN-ADDR.ARPA": }'
+        'dns::zone { "168.192.IN-ADDR.ARPA": }',
       ]
     end
 
@@ -197,13 +197,13 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all'
+        ptr: 'all',
       }
     end
     let :pre_condition do
       [
         'dns::zone { "192.IN-ADDR.ARPA": }',
-        'dns::zone { "128.168.192.IN-ADDR.ARPA": }'
+        'dns::zone { "128.168.192.IN-ADDR.ARPA": }',
       ]
     end
 
@@ -219,13 +219,13 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all'
+        ptr: 'all',
       }
     end
     let :pre_condition do
       [
         'dns::zone { "168.192.IN-ADDR.ARPA": }',
-        'dns::zone { "128.168.192.IN-ADDR.ARPA": }'
+        'dns::zone { "128.168.192.IN-ADDR.ARPA": }',
       ]
     end
 
@@ -241,14 +241,14 @@ describe 'dns::record::a', type: :define do
         host: 'atest',
         zone: 'example.com',
         data: ['192.168.128.68', '192.168.128.69', '192.168.128.70'],
-        ptr: 'all'
+        ptr: 'all',
       }
     end
     let :pre_condition do
       [
         'dns::zone { "192.IN-ADDR.ARPA": }',
         'dns::zone { "168.192.IN-ADDR.ARPA": }',
-        'dns::zone { "128.168.192.IN-ADDR.ARPA": }'
+        'dns::zone { "128.168.192.IN-ADDR.ARPA": }',
       ]
     end
 

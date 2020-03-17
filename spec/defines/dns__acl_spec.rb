@@ -7,7 +7,7 @@ describe 'dns::acl' do
   let(:facts) do
     {
       concat_basedir: '/tmp',
-      osfamily: 'Debian'
+      osfamily: 'Debian',
     }
   end
 
