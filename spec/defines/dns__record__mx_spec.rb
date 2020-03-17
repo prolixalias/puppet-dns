@@ -29,7 +29,9 @@ describe 'dns::record::mx', type: :define do
     end
 
     it { is_expected.not_to raise_error }
+    # rubocop:disable Layout/LineLength
     it { is_expected.to contain_concat__fragment('db.example.com.mxtest,example.com,MX,22,ittybittymx.example.com.record').with_content(%r{^branchoffice\s+IN\s+MX\s+22\s+ittybittymx\.example\.com\.$}) }
+    # rubocop:enable Layout/LineLength
   end
 
   context 'passing a wrong (out-of-range) preference' do
