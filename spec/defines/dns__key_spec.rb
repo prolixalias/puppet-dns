@@ -7,7 +7,7 @@ describe 'dns::key' do
   let(:default_facts) { { concat_basedir: '/tmp' } }
 
   context 'On a Debian OS' do
-    let (:facts) do
+    let :facts do
       default_facts.merge(osfamily: 'Debian')
     end
 
@@ -26,7 +26,7 @@ describe 'dns::key' do
   end
 
   context 'On a RedHat OS' do
-    let (:facts) do
+    let :facts do
       default_facts.merge(osfamily: 'RedHat')
     end
 
