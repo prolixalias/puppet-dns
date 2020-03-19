@@ -1,7 +1,7 @@
 # == Class dns::server::params
 #
 class dns::server::params {
-  case $::osfamily {
+  case $facts['osfamily'] {
     'Debian': {
       $cfg_dir            = '/etc/bind'
       $cfg_file           = '/etc/bind/named.conf'
@@ -24,7 +24,7 @@ class dns::server::params {
         { '0.in-addr.arpa'   => '/etc/bind/db.0' },
         { '255.in-addr.arpa' => '/etc/bind/db.255' },
       ]
-      if versioncmp( $::operatingsystemmajrelease, '8' ) >= 0 {
+      if versioncmp( String($facts['operatingsystemmajrelease']), '8' ) >= 0 {
         $necessary_packages = [ 'bind9', 'bind9utils' ]
       } else {
         $necessary_packages = [ 'bind9', 'bind9utils', 'dnssec-tools' ]
@@ -52,7 +52,7 @@ class dns::server::params {
         { '1.0.0.127.in-addr.arpa'                                                   => 'named.loopback' },
         { '0.in-addr.arpa'                                                           => 'named.empty' },
       ]
-      if $::operatingsystemmajrelease =~ /^[1-5]$/ {
+      if String($facts['operatingsystemmajrelease']) =~ /^[1-5]$/ {
         $default_dnssec_enable     = false
         $default_dnssec_validation = 'absent'
       } else {

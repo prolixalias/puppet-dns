@@ -4,7 +4,6 @@ class dns::server::default (
 
   $default_file          = $dns::server::params::default_file,
   $default_template      = $dns::server::params::default_template,
-
   $resolvconf            = undef,
   $options               = undef,
   $rootdir               = undef,

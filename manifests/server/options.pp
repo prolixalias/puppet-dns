@@ -271,7 +271,7 @@ define dns::server::options (
     fail('The transfer_source is not an ip string')
   }
 
-  # validate these, just in case they're overridden
+  # validate these, just in case overridden
   validate_absolute_path($data_dir)
   validate_absolute_path($working_dir)
 
