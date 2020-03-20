@@ -70,7 +70,7 @@ define dns::record::txt (
   $data,
   $ttl = '',
   $host = $name,
-  $data_dir = $::dns::config::data_dir,
+  $data_dir = $dns::data_dir,
 ) {
 
   $alias = "${name},TXT,${zone}"

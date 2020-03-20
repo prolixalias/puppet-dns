@@ -11,7 +11,7 @@ define dns::record::srv (
   $target,
   $proto = 'tcp',
   $ttl = '',
-  $data_dir = $::dns::config::data_dir,
+  $data_dir = $dns::data_dir,
 ) {
 
   $alias = "${service}:${proto}@${target}:${port},${pri},${weight},SRV,${zone}"

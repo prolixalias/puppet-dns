@@ -167,9 +167,9 @@ define dns::options (
   $control_channel_ip = undef,
   $control_channel_port = undef,
   $control_channel_allow = undef,
-  $data_dir = $::dns::data_dir,
-  $dnssec_validation = $::dns::params::default_dnssec_validation,
-  $dnssec_enable = $::dns::params::default_dnssec_enable,
+  $data_dir = $dns::data_dir,
+  $dnssec_validation = $dns::params::default_dnssec_validation,
+  $dnssec_enable = $dns::params::default_dnssec_enable,
   $forward_policy = undef,
   $forwarders = [],
   $listen_on = [],
@@ -186,9 +186,9 @@ define dns::options (
   $statistic_channel_allow = undef,
   $transfers = [],
   $transfer_source = undef,
-  $working_dir = $::dns::params::working_dir,
+  $working_dir = $dns::params::working_dir,
   $zone_notify = undef,
-  $cfg_dir = $::dns::cfg_dir,
+  $cfg_dir = $dns::cfg_dir,
   $extra_options = {},
 ) {
   include dns
@@ -283,8 +283,8 @@ define dns::options (
 
   file { $title:
     ensure  => present,
-    owner   => $::dns::params::owner,
-    group   => $::dns::params::group,
+    owner   => $dns::params::owner,
+    group   => $dns::params::group,
     mode    => '0644',
     require => [File[$cfg_dir], Class['::dns::install']],
     content => template("${module_name}/named.conf.options.erb"),

@@ -9,8 +9,9 @@ define dns::record::a (
   $ttl = '',
   $ptr = false,
   $host = $name,
-  $data_dir = $::dns::config::data_dir,
+  $data_dir = $dns::data_dir,
 ) {
+  include dns
 
   $alias = "${name},A,${zone}"
 
