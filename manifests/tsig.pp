@@ -24,8 +24,9 @@ define dns::tsig (
   $secret    = undef,
   $ensure    = present
 ) {
+  include dns
 
-  $cfg_dir   = $dns::server::params::cfg_dir # Used in a template
+  $cfg_dir   = $dns::cfg_dir # Used in a template
   validate_string($name)
 
   if $ensure == 'present' {

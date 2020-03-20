@@ -6,8 +6,8 @@ describe 'basic dns' do
   context 'default parameters' do
     let(:pp) do
       "
-       include dns::server
-       dns::server::options { '/etc/bind/named.conf.options':
+       include dns::
+       dns::options { '/etc/bind/named.conf.options':
          forwarders => [ '8.8.8.8', '8.8.4.4' ]
        }
      "

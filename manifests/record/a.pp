@@ -9,7 +9,7 @@ define dns::record::a (
   $ttl = '',
   $ptr = false,
   $host = $name,
-  $data_dir = $::dns::server::config::data_dir,
+  $data_dir = $::dns::config::data_dir,
 ) {
 
   $alias = "${name},A,${zone}"

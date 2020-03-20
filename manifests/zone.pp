@@ -103,7 +103,7 @@
 #   `[ '192.168.100.102 port 1234' ]`.  If passed an empty array or the
 #   boolean value `false`, the zone will not forward.  If passed `true`
 #   or left undefined, the zone will use the global forwarders defined
-#   in `dns::server::options`.
+#   in `dns::options`.
 #   *Note* - this parameter deprecates and should be used in place of
 #   the *allow_forwarder* parameter.  If both parameters are passed in,
 #   only *forwarders* will take effect.
@@ -195,7 +195,7 @@ define dns::zone (
   $reverse = false,
   $serial = false,
   $zone_type = 'master',
-  $allow_transfer = [],
+  Array $allow_transfer = [],
   $allow_query =[],
   $allow_update =[],
   $allow_update_forwarding =[],
@@ -206,16 +206,8 @@ define dns::zone (
   $also_notify = [],
   $ensure = present,
   $forwarders = undef,
-  $allow_forwarder = undef,
-  $data_dir = $::dns::server::data_dir,
-  $cfg_dir = $::dns::server::cfg_dir,
 ) {
-  validate_array($allow_transfer)
-  # deprecation notice for allow_forwarder
-  if size($allow_forwarder) > 0 {
-    warning('dns::zone parameter `allow_forwarder` deprecated in favor of `forwarders`')
-    notify { 'dns::zone parameter `allow_forwarder` deprecated in favor of `forwarders`': }
-  }
+  include dns
 
   # assign $zone_forwarders to the list of forwarders to define for the
   # zone.  an empty list means *no forwarders*.  set $zone_forwarders to
@@ -233,8 +225,6 @@ define dns::zone (
       validate_array($forwarders)
       $zone_forwarders = $forwarders
     }
-  } elsif size($allow_forwarder) > 0 {
-    $zone_forwarders = $allow_forwarder
   } else {
     $zone_forwarders = undef
   }
@@ -263,7 +253,7 @@ define dns::zone (
     fail("The zone_type must be one of [${valid_zone_type_array}]")
   }
 
-  $zone_file = "${data_dir}/db.${name}"
+  $zone_file = "${dns::data_dir}/db.${name}"
   $zone_file_temp = "${zone_file}.temp"
   $zone_file_stage = "${zone_file}.stage"
 
@@ -294,11 +284,11 @@ define dns::zone (
 
     # Create "fake" zone file without zone-serial
     concat { $zone_file_stage:
-      owner   => $dns::server::params::owner,
-      group   => $dns::server::params::group,
+      owner   => $dns::owner,
+      group   => $dns::group,
       mode    => '0644',
       replace => $zone_replace,
-      require => Class['dns::server'],
+      require => Class['dns'],
       notify  => Exec["test-${zone}"]
     }
     concat::fragment{"db.${name}.soa":
@@ -316,9 +306,9 @@ define dns::zone (
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
       provider    => posix,
-      user        => $dns::server::params::owner,
-      group       => $dns::server::params::group,
-      require     => Class['dns::server::install'],
+      user        => $dns::owner,
+      group       => $dns::group,
+      require     => Class['dns::install'],
       notify      => Exec["bump-${zone}-serial"],
     }
 
@@ -335,9 +325,9 @@ define dns::zone (
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
       provider    => posix,
-      user        => $dns::server::params::owner,
-      group       => $dns::server::params::group,
-      require     => Class['dns::server::install'],
+      user        => $dns::owner,
+      group       => $dns::group,
+      require     => Class['dns::install'],
     }
     ~> exec { "test-${zone}-serial":
       command     => "/usr/sbin/named-checkzone ${name} ${zone_file_temp}",
@@ -349,9 +339,9 @@ define dns::zone (
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
       provider    => posix,
-      user        => $dns::server::params::owner,
-      group       => $dns::server::params::group,
-      notify      => Class['dns::server::service'],
+      user        => $dns::owner,
+      group       => $dns::group,
+      notify      => Class['dns::service'],
     }
   } else {
     # For any zone file that is not a master zone, we should make sure
@@ -363,11 +353,11 @@ define dns::zone (
 
   # Include Zone in named.conf.local or view file
   $target = $default_zone ? {
-    true    => $dns::server::params::rfc1912_zones_cfg,
+    true    => $dns::rfc1912_zones_cfg,
     default => $view ? {
-      undef =>  "${cfg_dir}/named.conf.local",
-      '' =>  "${cfg_dir}/named.conf.local",
-      default =>  "${cfg_dir}/view-${view}.conf",
+      undef =>  "${dns::cfg_dir}/named.conf.local",
+      '' =>  "${dns::cfg_dir}/named.conf.local",
+      default =>  "${dns::cfg_dir}/view-${view}.conf",
     }
   }
   concat::fragment{"named.conf.local.${name}.include":

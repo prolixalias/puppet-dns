@@ -19,14 +19,13 @@ define dns::acl (
   $aclname = $name,
   $data = [],
 ) {
-  # Is this redudant now, or do we include dns::server base?
-  include dns::server::params
+  include dns
 
   validate_string($aclname)
   validate_array($data)
 
   concat::fragment { "named.conf.local.acl.${name}.include":
-    target  => "${dns::server::cfg_dir}/named.conf.local",
+    target  => "${dns::cfg_dir}/named.conf.local",
     order   => 2,
     content => template("${module_name}/acl.erb"),
   }

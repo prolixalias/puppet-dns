@@ -1,8 +1,8 @@
 # Smoketest.
 
-include dns::server
+include dns
 
-dns::server::options { "${dns::server::params::cfg_dir}/named.conf.options":
+dns::options { "${dns::params::cfg_dir}/named.conf.options":
   forwarders => [ '8.8.8.8', '8.8.4.4' ]
 }
 

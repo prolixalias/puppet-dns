@@ -1,0 +1,22 @@
+---
+dns::cfg_dir: /etc/named
+dns::cfg_file: /etc/named.conf
+dns::data_dir: /var/named
+dns::working_dir: /var/named/data
+dns::root_hint: /var/named/named.ca
+dns::rfc1912_zones_cfg: /etc/named.rfc1912.zones
+dns::rndc_key_file: /etc/named.root.key
+dns::group: named
+dns::owner: named
+dns::package: bind
+dns::service: named
+dns::necessary_packages:
+  - bind
+dns::default_file: /etc/sysconfig/named
+dns::default_template: default.redhat.erb
+dns::rfc1912_zones:
+  - localhost.localdomain: named.localhost
+  - localhost: named.localhost
+  - 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa: named.loopback
+  - 1.0.0.127.in-addr.arpa: amed.loopback
+  - 0.in-addr.arpa: named.empty

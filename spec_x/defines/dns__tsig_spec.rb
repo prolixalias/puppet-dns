@@ -6,7 +6,7 @@ describe 'dns::tsig' do
   let(:facts) { { osfamily: 'Debian', concat_basedir: '/mock_dir' } }
   let(:title) { 'ns3' }
   let :pre_condition do
-    'class { "::dns::server::config": }'
+    'class { "::dns::config": }'
   end
 
   context 'passing valid array to server' do

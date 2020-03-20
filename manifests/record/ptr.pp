@@ -7,7 +7,7 @@ define dns::record::ptr (
   $data,
   $ttl = '',
   $host = $name,
-  $data_dir = $::dns::server::config::data_dir,
+  $data_dir = $::dns::config::data_dir,
 ) {
 
   $alias = "${name},PTR,${zone}"

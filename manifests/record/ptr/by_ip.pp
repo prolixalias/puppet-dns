@@ -78,7 +78,7 @@ define dns::record::ptr::by_ip (
   $zone = undef,
   $ttl = undef,
   $ip = $name,
-  $data_dir = $::dns::server::config::data_dir,
+  $data_dir = $::dns::config::data_dir,
 ) {
 
   # split the IP address up into three host/zone pairs based on class A, B, or C splits:

@@ -1,8 +1,9 @@
 # == Class define::key
 #
 define dns::key {
-  include dns::server::params
-  $cfg_dir = $dns::server::params::cfg_dir # Used in a template
+  include dns
+
+  $cfg_dir = $dns::cfg_dir # Used in a template
 
   file { "/tmp/${name}-secret.sh":
     ensure  => file,
@@ -39,10 +40,10 @@ define dns::key {
   }
 
   concat { "${cfg_dir}/bind.keys.d/${name}.key":
-    owner  => $dns::server::params::owner,
-    group  => $dns::server::params::group,
+    owner  => $dns::owner,
+    group  => $dns::group,
     mode   => '0644',
-    notify => Class['dns::server::service']
+    notify => Class['dns::service']
   }
 
   Concat::Fragment {

@@ -1,0 +1,24 @@
+---
+dns::cfg_dir: /etc/bind
+dns::cfg_file: /etc/bind/named.conf
+dns::data_dir: /var/lib/bind/zones
+dns::working_dir: /var/cache/bind
+dns::root_hint: /etc/bind/db.root
+dns::rfc1912_zones_cfg: /etc/bind/named.conf.default-zones
+dns::rndc_key_file: /etc/bind/rndc.key
+dns::group: bind
+dns::owner: bind
+dns::package: bind9
+dns::service: bind9
+dns::necessary_packages:
+  - bind9
+  - bind9utils
+dns::default_file: /etc/default/bind9
+dns::default_template: default.debian.erb
+dns::default_dnssec_enable: true
+dns::default_dnssec_validation: auto
+dns::rfc1912_zones:
+  - localhost: /etc/bind/db.local
+  - 127.in-addr.arpa: /etc/bind/db.127
+  - 0.in-addr.arpa: /etc/bind/db.0
+  - 255.in-addr.arpa: /etc/bind/db.255
