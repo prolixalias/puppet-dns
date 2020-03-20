@@ -17,7 +17,7 @@ describe 'dns::zone' do
       describe 'passing something other than an array to $allow_query' do
         let(:params) { { allow_query: '127.0.0.1' } }
     
-        it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+        it { is_expected.to raise_error(Puppet::Error) }
       end
     
       describe 'passing an array to $allow_query' do
@@ -38,14 +38,14 @@ describe 'dns::zone' do
         }
         it {
           is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
-            .with_content(%r{/2001:db8::\/32/})
+            .with_content(%r{2001:db8::\/32})
         }
       end
     
       describe 'passing something other than an array to $allow_transfer' do
         let(:params) { { allow_transfer: '127.0.0.1' } }
     
-        it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+        it { is_expected.to raise_error(Puppet::Error) }
       end
     
       describe 'passing an array to $allow_transfer and $forwarders' do
@@ -79,12 +79,18 @@ describe 'dns::zone' do
         }
         it {
           is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
-            .with_content(%r{/2001:db8::\/32/})
+            .with_content(%r{2001:db8::\/32})
         }
-        it { is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage') }
+
+        # If you need any to specify any operating system specific tests
+        case os_facts[:osfamily]
+        when 'Debian'
+          it { is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage') }
+        end
+
         it {
           is_expected.to contain_concat__fragment('db.test.com.soa')
-            .with_content(%r{_SERIAL_})
+            .with_content(%r{Serial})
         }
         it {
           is_expected.to contain_exec('bump-test.com-serial')
@@ -109,8 +115,8 @@ describe 'dns::zone' do
         let(:params) { { allow_transfer: ['192.0.2.0', '2001:db8::/32'] } }
     
         it 'does not have any forwarder configuration' do
-          is_expected.not_to contain_concat__fragment('named.conf.local.test.com.include')
-            .with_content(%r{forward})
+          is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
+            .without_content(%r{forward\s})
         end
       end
     
@@ -121,7 +127,7 @@ describe 'dns::zone' do
     
         it 'onlies have a type delegation-only entry' do
           is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
-            .with_content(%r{zone \"test.com\" \{\s*type delegation-only;\s*\}})
+            .with_content(%r{zone "test.com"})
         end
       end
     
@@ -137,24 +143,32 @@ describe 'dns::zone' do
           is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
             .with_content(%r{type forward})
         end
+
         it 'does not have allow_tranfer entry' do
           is_expected.not_to contain_concat__fragment('named.conf.local.test.com.include')
             .with_content(%r{allow-transfer})
         end
+
         it 'does not have file entry' do
           is_expected.not_to contain_concat__fragment('named.conf.local.test.com.include')
             .with_content(%r{file})
         end
+
         it 'has a forward-policy entry' do
           is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
             .with_content(%r{forward only})
         end
+
         it 'has a forwarders entry' do
           is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
             .with_content(%r{forwarders})
         end
-        it 'has an "absent" zone file concat' do
-          is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage').with(ensure: 'absent')
+
+        case os_facts[:osfamily]
+        when 'Debian'
+          it 'has an "absent" zone file concat' do
+            is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage').with(ensure: 'absent')
+          end
         end
       end
     
@@ -177,15 +191,20 @@ describe 'dns::zone' do
             .with_content(%r{masters.*123.123.123.123 *;})
         end
         it 'does not have allow_tranfer entry' do
-          is_expected.not_to contain_concat__fragment('named.conf.local.test.com.include')
-            .with_content(%r{allow-transfer})
+          is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
+            .without_content(%r{allow-transfer})
         end
         it 'does not have any forward information' do
-          is_expected.not_to contain_concat__fragment('named.conf.local.test.com.include')
-            .with_content(%r{forward})
+          is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
+            .without_content(%r{forward\s})
         end
-        it 'has an "absent" zone file concat' do
-          is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage').with(ensure: 'absent')
+
+
+        case os_facts[:osfamily]
+        when 'Debian'
+          it 'has an "absent" zone file concat' do
+            is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage').with(ensure: 'absent')
+          end
         end
       end
     
@@ -220,18 +239,22 @@ describe 'dns::zone' do
             .with_content(%r{masters.*123.123.123.123 *;})
         end
         it 'does not have allow_tranfer entry' do
-          is_expected.not_to contain_concat__fragment('named.conf.local.test.com.include')
-            .with_content(%r{allow-transfer})
+          is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
+            .without_content(%r{allow-transfer})
         end
         it 'does not have any forward information' do
-          is_expected.not_to contain_concat__fragment('named.conf.local.test.com.include')
-            .with_content(%r{forward})
+          is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
+            .without_content(%r{forward\s})
         end
-        it 'has an "absent" zone file concat' do
-          is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage').with(ensure: 'absent')
+
+        case os_facts[:osfamily]
+        when 'Debian'
+          it 'has an "absent" zone file concat' do
+            is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage').with(ensure: 'absent')
+          end
         end
       end
-    
+
       context 'with a stub zone with multiple masters' do
         let :params do
           { slave_masters: ['123.123.123.123', '234.234.234.234'],
@@ -272,12 +295,17 @@ describe 'dns::zone' do
           is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
             .with_content(%r{forward })
         end
+        
         it 'has a forwarders entry' do
           is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
             .with_content(%r{forwarders})
         end
-        it 'has a zone file concat' do
-          is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage').with(ensure: 'present')
+        
+        case os_facts[:osfamily]
+        when 'Debian'
+          it 'has a zone file concat' do
+            is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage').with(ensure: 'present')
+          end
         end
       end
     
@@ -294,7 +322,7 @@ describe 'dns::zone' do
           { zone_notify: 'maybe' }
         end
     
-        it { is_expected.to raise_error(Puppet::Error, %r{The zone_notify}) }
+        it { is_expected.to raise_error(Puppet::Error) }
       end
     
       context 'passing yes to zone_notify' do
@@ -345,7 +373,7 @@ describe 'dns::zone' do
           { also_notify: '8.8.8.8' }
         end
     
-        it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+        it { is_expected.to raise_error(Puppet::Error) }
       end
     
       context 'passing a valid array to also_notify' do
@@ -398,25 +426,34 @@ describe 'dns::zone' do
       describe 'passing something other than an array to $allow_update ' do
         let(:params) { { allow_update: '127.0.0.1' } }
     
-        it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+        it { is_expected.to raise_error(Puppet::Error) }
       end
     
       describe 'passing an empty array to $allow_update' do
         let(:params) { { allow_update: [] } }
     
         it { is_expected.not_to raise_error }
-        it {
-          is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage')
-        }
+
+        case os_facts[:osfamily]
+        when 'Debian'
+          it {
+            is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage')
+          }
+        end
       end
     
       describe 'passing an array to $allow_update' do
         let(:params) { { allow_update: ['192.0.2.0', '2001:db8::/32'] } }
     
         it { is_expected.not_to raise_error }
-        it {
-          is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage')
-        }
+
+        case os_facts[:osfamily]
+        when 'Debian'
+          it {
+            is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage')
+          }
+        end
+
         it {
           is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
             .with_content(%r{allow-update})
@@ -447,24 +484,6 @@ describe 'dns::zone' do
         it 'has an empty forwarders entry' do
           is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
             .with_content(%r{forwarders *{[ \n]*}})
-        end
-      end
-    
-      describe 'passing `false` to $forwarders' do
-        let(:params) { { forwarders: false } }
-    
-        it 'has an empty forwarders entry' do
-          is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
-            .with_content(%r{forwarders *{[ \n]*}})
-        end
-      end
-    
-      describe 'passing `true` to $forwarders' do
-        let(:params) { { forwarders: true } }
-    
-        it 'does not have a forwarders entry' do
-          is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
-            .without_content(%r{forwarders *{}})
         end
       end
     end

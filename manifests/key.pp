@@ -1,7 +1,7 @@
 # == Class define::key
 #
 define dns::key {
-  include dns
+  require dns
 
   $cfg_dir = $dns::cfg_dir # Used in a template
 
@@ -15,10 +15,6 @@ define dns::key {
   exec { "dnssec-keygen-${name}":
     command     => "/usr/sbin/dnssec-keygen -a HMAC-MD5 -r /dev/urandom -b 128 -n USER ${name}",
     cwd         => "${cfg_dir}/bind.keys.d",
-    require     => [
-      Package['dnssec-tools'],
-      File["${cfg_dir}/bind.keys.d"],
-    ],
     refreshonly => true,
     notify      => Exec["get-secret-from-${name}"],
   }

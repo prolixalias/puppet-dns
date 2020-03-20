@@ -190,55 +190,26 @@ define dns::zone (
   $zone_retry = '86400',
   $zone_expire = '2419200',
   $zone_minimum = '604800',
-  $default_zone = false,
+  Boolean $default_zone = false,
   $nameservers = [ $::fqdn ],
   $reverse = false,
   $serial = false,
-  $zone_type = 'master',
+  String $zone_type = 'master',
   Array $allow_transfer = [],
-  $allow_query =[],
-  $allow_update =[],
+  Array $allow_query =[],
+  Array $allow_update =[],
   $allow_update_forwarding =[],
-  $forward_policy = 'first',
-  $view = undef,
+  Enum['first', 'only'] $forward_policy = 'first',
+  Optional[String] $view = undef,
   $slave_masters = undef,
-  $zone_notify = undef,
+  Optional[Enum['yes', 'no', 'explicit', 'master-only']] $zone_notify = undef,
   $also_notify = [],
   $ensure = present,
-  $forwarders = undef,
+  Optional[Array] $forwarders = undef,
 ) {
   include dns
 
-  # assign $zone_forwarders to the list of forwarders to define for the
-  # zone.  an empty list means *no forwarders*.  set $zone_forwarders to
-  # undef to not define the forwarders list at all (and thereby default
-  # to the forwarders list defined in the global options).
-
-  if $forwarders != undef {
-    if is_bool($forwarders) {
-      if $forwarders {
-        $zone_forwarders = undef
-      } else {
-        $zone_forwarders = []
-      }
-    } else {
-      validate_array($forwarders)
-      $zone_forwarders = $forwarders
-    }
-  } else {
-    $zone_forwarders = undef
-  }
-
-  if !member(['first', 'only'], $forward_policy) {
-    fail('The forward policy can only be set to either first or only')
-  }
-  validate_array($allow_query)
-
-  validate_array($also_notify)
-  $valid_zone_notify = ['yes', 'no', 'explicit', 'master-only']
-  if $zone_notify != undef and !member($valid_zone_notify, $zone_notify) {
-    fail("The zone_notify must be ${valid_zone_notify}")
-  }
+  $zone_forwarders = $forwarders
 
   $zone = $reverse ? {
     'reverse' => join(reverse(split("arpa.in-addr.${name}", '\.')), '.'),
@@ -246,18 +217,10 @@ define dns::zone (
     default   => $name
   }
 
-  validate_string($zone_type)
-  $valid_zone_type_array = ['master', 'slave', 'stub', 'forward', 'delegation-only']
-  if !member($valid_zone_type_array, $zone_type) {
-    $valid_zone_type_array_str = join($valid_zone_type_array, ',')
-    fail("The zone_type must be one of [${valid_zone_type_array}]")
-  }
-
   $zone_file = "${dns::data_dir}/db.${name}"
   $zone_file_temp = "${zone_file}.temp"
   $zone_file_stage = "${zone_file}.stage"
 
-  validate_array($allow_update)
   # Replace when updates allowed
   if empty($allow_update) {
     $zone_replace = true
@@ -265,13 +228,7 @@ define dns::zone (
     $zone_replace = false
   }
 
-  if $view {
-    validate_string($view)
-  }
-
-  validate_bool($default_zone)
-
-  if $view and $default_zone == true {
+  if $view and $default_zone {
     fail('view and default parameters are mutually excluding')
   }
 
@@ -279,7 +236,8 @@ define dns::zone (
     file { $zone_file:
       ensure => absent,
     }
-  } elsif $zone_type == 'master' {
+  }
+  elsif $zone_type == 'master' {
     # Zone Database
 
     # Create "fake" zone file without zone-serial
@@ -291,6 +249,7 @@ define dns::zone (
       require => Class['dns'],
       notify  => Exec["test-${zone}"]
     }
+
     concat::fragment{"db.${name}.soa":
       target  => $zone_file_stage,
       order   => 1,
@@ -343,7 +302,8 @@ define dns::zone (
       group       => $dns::group,
       notify      => Class['dns::service'],
     }
-  } else {
+  }
+  else {
     # For any zone file that is not a master zone, we should make sure
     # we don't have a staging file
     concat { $zone_file_stage:
@@ -365,5 +325,4 @@ define dns::zone (
     order   => 3,
     content => template("${module_name}/zone.erb"),
   }
-
 }
